@@ -1,0 +1,14 @@
+# Ogólne pliki i katalogi ignorowane globalnie
+node_modules/
+.DS_Store
+*.log
+*.bak
+*.tmp
+
+# Systemy IDE
+.idea/
+.vscode/
+*.iml
+
+# System operacyjny
+Thumbs.db
