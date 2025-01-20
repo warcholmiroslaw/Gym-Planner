@@ -11,24 +11,37 @@ import ImageButton from "../components/ImageButton";
 
 
 const Exercises = () => {
+    const url = "exercise/category/";
 
     const exerciseButtons = [
-    {name: "chest",image: chest, action: "chest"},
-        {name: "arms",image: arms, action: "arms"},
-        {name: "back",image: back, action: "back"},
-        {name: "abs",image: abs, action: "abs"},
-        {name: "legs",image: legs, action: "legs"},
-        {name: "shoulders",image: shoulders, action: "shoulder"},
+    {name: "chest",image: chest, action: url + "Chest"},
+        {name: "arms",image: arms, action: url + "Arms"},
+        {name: "back",image: back, action: url + "Back"},
+        {name: "abs",image: abs, action: url + "Abs"},
+        {name: "legs",image: legs, action: url + "Legs"},
+        {name: "shoulders",image: shoulders, action: url + "Shoulder"},
     ]
     return (
     <Flex
+        display="flex"
         justifyContent="center"
         alignItems="center"
-        height="100vh"
+        height={{base: "100%", md: "100%", lg:"100vh"}}
+        width="100%"
+        padding={{base:2, md: 4, lg:8}}
+        boxSizing="border-box"
     >
-        <SimpleGrid columns={3} spacing={12}>
+        <SimpleGrid
+            columns={{base: 1, md: 2, lg: 3}}
+            justifyContent="center"
+            alignItems="center"
+            spacing={{base:4, md: 8, lg: 10}}
+            width="100%"
+            boxSizing="border-box"
+        >
             {exerciseButtons.map((field, index) => (
                 <ImageButton
+                    width={{base: "70%", md: "45%", lg: "80%"}}
                     key={index}
                     fieldKey={index}
                     image={field.image}

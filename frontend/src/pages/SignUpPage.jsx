@@ -1,18 +1,11 @@
 import {
     Button,
     Container,
-    Image,
-    Stack,
-    Text
-} from "@chakra-ui/react";
+    Stack} from "@chakra-ui/react";
 import React from "react";
-import logo from '../images/logo.png';
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa6";
-import { IoEyeOutline } from "react-icons/io5";
-import { FiEyeOff } from "react-icons/fi";
 import {MdOutlineMailOutline} from "react-icons/md";
-import {LuPhone} from "react-icons/lu";
 import CustomInput from "../components/CustomInput";
 import LogoWithTitle from "../components/LogoWithTitle";
 
@@ -38,13 +31,16 @@ const SignUpPage = () => {
             <Container display="flex"
                        flexDirection="column"
                        justifyContent="center"
-                       minHeight="100vh"// Centrowanie pionowe
+                       minHeight="100vh"
             >
 
                 <LogoWithTitle />
 
                 <form onSubmit={handleSubmit}>
-                    <Stack spacing={4}>
+                    <Stack spacing={4}
+                           alignItems="center"
+
+                    >
 
                         {inputFields.map((field, index) => (
                             <CustomInput
@@ -61,7 +57,9 @@ const SignUpPage = () => {
 
                         <Button type="submit"
                                 bg="#005BC5"
-                                color="#FFFFFF">
+                                color="#FFFFFF"
+                                width={{base: "70%", md: "100%", lg: "100%"}}
+                        >
                             Create account
                         </Button>
 

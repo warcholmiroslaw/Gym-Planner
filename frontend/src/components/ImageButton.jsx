@@ -19,19 +19,29 @@ const ImageButton = ({fieldKey, image, name, action}) => {
                 bg = "#001449"
                 display="flex"
                 flexDirection="column"
+                alignItems="center"
                 justifyContent="center"
-                boxSize= "32vh"
+                boxSize="100%"
                 color="#DADADA"
                 margin={1}
                 _hover={{bg: "#005BC5", color: "#FFFFFF"}}
-                borderRadius={10}>
+                borderRadius={10}
+                padding={{base:2, md: 4, lg:8}}
+                boxSizing="border-box"
+        >
 
 
-            <Image src={image} boxSize="25vh"></Image>
+            <Image src={image}
+                   boxSize={{base: "80%", md: "70%", lg: "60%"}}
+                   boxSizing="border-box"
+            >
+            </Image>
             <Text
                 fontSize="2xl"
                 fontWeight="bold"
                 padding={3}
+                height="auto"
+                width="100%"
             >
                 {name}
             </Text>

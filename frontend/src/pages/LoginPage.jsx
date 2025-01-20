@@ -1,22 +1,11 @@
 import {
     Button,
-    Container, FormControl, FormLabel,
-    Image,
-    Input,
-    InputGroup,
-    InputLeftElement,
-    InputRightElement,
+    Container,
     Stack,
-    Text
 } from "@chakra-ui/react";
 import React, {useState} from "react";
-import logo from '../images/logo.png';
 import { RiLockPasswordLine } from "react-icons/ri";
-import { FaRegUser } from "react-icons/fa6";
-import { IoEyeOutline } from "react-icons/io5";
-import { FiEyeOff } from "react-icons/fi";
 import {MdOutlineMailOutline} from "react-icons/md";
-import {LuPhone} from "react-icons/lu";
 import CustomInput from "../components/CustomInput";
 import {useNavigate} from "react-router-dom";
 import { login } from "../services/authService";
