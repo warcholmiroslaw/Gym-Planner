@@ -1,7 +1,9 @@
 package com.example.demo.services;
 
+import com.example.demo.dtos.ExerciseDto;
 import com.example.demo.models.Exercise;
 import com.example.demo.repository.ExerciseRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -49,7 +51,29 @@ public class ExerciseService {
         return exerciseRepository.findByUserId(userId);
     }
 
-    public Exercise createExercise(Exercise exercise) {
-        return exerciseRepository.save(exercise);
+    public Exercise createExercise(ExerciseDto exerciseDto, Integer userId) {
+
+        Exercise newExercise = new Exercise()
+                .setUserId(userId)
+                .setName(exerciseDto.getName())
+                .setDescription(exerciseDto.getDescription())
+                .setMuscleGroupId(exerciseDto.getMuscleGroupId());
+
+        return exerciseRepository.save(newExercise);
+    }
+
+    public Exercise updateExercise(ExerciseDto exerciseDto, Integer userId) {
+        Exercise existingExercise = exerciseRepository.findById(exerciseDto.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found"));
+
+
+        // model mapper allows to update only that values that were inserted
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+
+        //update only these values that were inserted
+        modelMapper.map(exerciseDto, existingExercise);
+
+        return exerciseRepository.save(existingExercise);
     }
 }

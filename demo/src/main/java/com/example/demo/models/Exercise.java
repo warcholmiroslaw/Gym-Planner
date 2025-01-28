@@ -3,7 +3,11 @@ package com.example.demo.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
+@Setter
+@Accessors(chain = true)
 @Entity
 @Table(name = "exercises")
 @Data
@@ -18,8 +22,11 @@ public class Exercise {
     private Integer userId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "muscle_group_id")
+    @JoinColumn(name = "muscle_group_id", insertable = false, updatable = false)
     private MuscleGroup muscleGroup;
+
+    @Column(name="muscle_group_id")
+    private Integer muscleGroupId;
 
     private String name;
 

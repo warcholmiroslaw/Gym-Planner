@@ -13,10 +13,11 @@ public class WorkoutPlan {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY) // object will be loaded only when needed
-    @JoinColumn(name ="user_id", referencedColumnName = "user_id", nullable = true)
+    @JoinColumn(name ="user_id", referencedColumnName = "user_id", nullable = true,
+            insertable = false, updatable = false)
     private User user;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
+    @Column(name = "user_id")
     private Integer userId;
 
     private String name;

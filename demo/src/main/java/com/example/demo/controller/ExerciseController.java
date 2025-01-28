@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dtos.ExerciseDto;
 import com.example.demo.services.ExerciseService;
 import com.example.demo.models.Exercise;
 import com.example.demo.services.JwtService;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.modelmapper.ModelMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,8 +50,24 @@ public class ExerciseController {
 
         return new ResponseEntity<Exercise>(exerciseService.getExerciseByName(name, userId), HttpStatus.OK);
     }
+    @PutMapping("/update")
+    public ResponseEntity<Exercise> updateExercise(@RequestBody ExerciseDto exerciseDto, HttpServletRequest request) {
+        Integer userId = jwtService.extractUserId(request);
+        Exercise updatedExercise = exerciseService.updateExercise(exerciseDto, userId);
 
+        return ResponseEntity.ok(updatedExercise);
 
+    }
+    // add new exercise that belong to user
+    @PostMapping("/add")
+    public ResponseEntity<Exercise> createExercise(@RequestBody ExerciseDto exerciseDto, HttpServletRequest request) {
+        Integer userId = jwtService.extractUserId(request);
+
+        Exercise newExercise = exerciseService.createExercise(exerciseDto, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newExercise);
+    }
+
+    // get all user and global exercises by category
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Exercise>> getExerciseByCategory(@PathVariable String category, HttpServletRequest request) {
 
