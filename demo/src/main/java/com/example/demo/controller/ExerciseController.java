@@ -45,7 +45,7 @@ public class ExerciseController {
     @GetMapping("/name/{name}")
     public ResponseEntity<Exercise> getExerciseByName(@PathVariable String name, HttpServletRequest request) {
         Integer userId = jwtService.extractUserId(request);
-        log.info("user id: " + userId);
+
         return new ResponseEntity<Exercise>(exerciseService.getExerciseByName(name, userId), HttpStatus.OK);
     }
 

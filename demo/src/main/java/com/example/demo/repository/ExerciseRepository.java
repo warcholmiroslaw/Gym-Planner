@@ -21,7 +21,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Integer> {
     @Query("SELECT e FROM Exercise e WHERE e.userId = NULL")
     Optional<List<Exercise>> findAllGlobalExercises();
 
-    @Query("SELECT e FROM Exercise e WHERE e.muscleGroup.name = :muscleGroupName AND e.userId = :userId")
+    @Query("SELECT e FROM Exercise e WHERE e.muscleGroup.name = :muscleGroupName AND (e.userId = :userId OR e.userId IS NULL)")
     Optional<List<Exercise>> findExercisesByMuscleGroupName(
                 @Param("muscleGroupName")String muscleGroupName,
                 @Param("userId") Integer userId
