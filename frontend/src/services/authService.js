@@ -1,21 +1,32 @@
 import axios from "axios";
 
 
-const API_URL = "http://localhost:8080";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 
 export const login = async (credentials) => {
-    const response = await axios.post(`${API_URL}/auth/login`, credentials);
+    const response = await axios.post(`${apiUrl}/auth/login`, credentials);
     const token = response.data.token;
 
     localStorage.setItem("token", token);
-
+    console.log(token);
     return token;
 };
 
+export const signup = async (credentials) => {
+    const response = await axios.post(`${apiUrl}/auth/signup`, credentials);
+    console.log(response);
+    const token = response.data.token;
+    return token;
+
+}
 
 export const getToken = () => {
-    return localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    if(!token) {
+        throw new Error("Token is missing in localStorage!");
+    }
+    return token;
 };
 
 
@@ -23,11 +34,3 @@ export const logout = () => {
     localStorage.removeItem("token");
 };
 
-export const fetchProtectedData = async (endpoint) => {
-    const token = getToken();
-    return await axios.get(`${API_URL}/${endpoint}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-};

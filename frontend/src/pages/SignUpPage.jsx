@@ -2,29 +2,58 @@ import {
     Button,
     Container,
     Stack} from "@chakra-ui/react";
-import React from "react";
+import React, {useState} from "react";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { FaRegUser } from "react-icons/fa6";
 import {MdOutlineMailOutline} from "react-icons/md";
 import CustomInput from "../components/CustomInput";
 import LogoWithTitle from "../components/LogoWithTitle";
+import {signup} from "../services/authService";
+import {useNavigate} from "react-router-dom";
 
 
 
 
 const SignUpPage = () => {
 
+    const [formData, setFormData] = useState({
+        email: "",
+        name: "",
+        surname: "",
+        password: "",
+        confirmPassword: "",
+    });
 
     const inputFields = [
         { name: "email", placeholder: "email", icon: MdOutlineMailOutline, isRequired: true },
         { name: "name", placeholder: "name", icon: FaRegUser, type: "text", isRequired: true },
         { name: "surname", placeholder: "surname", icon: FaRegUser, type: "text", isRequired: true },
         { name: "password", placeholder: "password", icon: RiLockPasswordLine, type: "password", isRequired: true },
-        { name: "confirm password", placeholder: "Confirm password", icon: RiLockPasswordLine, type: "password" ,isRequired: true},
+        { name: "confirmPassword", placeholder: "Confirm password", icon: RiLockPasswordLine, type: "password" ,isRequired: true},
     ];
 
-    function handleSubmit(e) {
+    const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
+
+    const  handleSubmit = async (e) => {
         e.preventDefault();
+
+        try {
+            console.log(formData);
+            const token = await signup(formData);
+            console.log("Sign up Token: ", token);
+
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -50,6 +79,8 @@ const SignUpPage = () => {
                                 placeholder={field.placeholder}
                                 icon={field.icon}
                                 type={field.type}
+                                onChange={handleChange}
+                                value={formData[field.name]}
                                 isRequired={field.isRequired}
                             />
                         ))}

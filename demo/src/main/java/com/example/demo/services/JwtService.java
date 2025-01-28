@@ -11,7 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,28 @@ public class JwtService {
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public Integer extractUserId(HttpServletRequest request) {
+
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String jwt = token.substring(7);
+
+        try {
+            return extractClaim(jwt, claims -> {
+                Integer userId = claims.get("userId", Integer.class);
+                if (userId == null) {
+                    throw new IllegalArgumentException("Token does not contain userId.");
+                }
+                return userId;
+            });
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            System.err.println("Error during processing JWT token : " + e.getMessage());
+            throw new RuntimeException("Error processing JWT token", e);
+        }
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
@@ -51,6 +75,7 @@ public class JwtService {
     ) {
         return Jwts
                 .builder()
+                .setId(extraClaims.toString())
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -69,6 +94,7 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
+
         return extractClaim(token, Claims::getExpiration);
     }
 

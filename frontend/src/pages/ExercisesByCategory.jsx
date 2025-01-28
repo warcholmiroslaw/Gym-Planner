@@ -4,7 +4,8 @@ import {Container, Flex, Text} from "@chakra-ui/react";
 import ButtonWithLabel from "../components/ButtonWithLabel";
 import { MdOutlineAddBox } from "react-icons/md";
 import ExerciseList from "../components/ExerciseList";
-
+import {fetchProtectedData} from "../services/api"
+import axios from "axios";
 
 const ExercisesByCategory = () => {
 
@@ -13,13 +14,21 @@ const ExercisesByCategory = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+
         const fetchExercises = async () => {
+
             setLoading(true);
+
             try {
-                const response = await fetch(`http://localhost:8080/exercise/category/${category}`);
-                const data = await response.json();
+                const data = await fetchProtectedData(`exercise/category/${category}`);
+                console.log(data);
                 setExercises(data);
             } catch (error) {
+
+                if (axios.isCancel(error)) {
+                    console.log("zadanie zostalo anulowane");
+                }
+
                 console.error("Błąd podczas pobierania danych:", error);
             } finally {
                 setLoading(false);
@@ -27,13 +36,15 @@ const ExercisesByCategory = () => {
         };
 
         fetchExercises();
-    }, [category]);
+
+
+    }, [category]); // if category changes React will run this function again
 
     if (loading) {
         return <p>Loading...</p>;
     }
 
-    if (!exercises.length && !loading) {
+    if (!Array.isArray(exercises) && !loading) {
         return <p>No exercises found for {category}.</p>;
     }
 

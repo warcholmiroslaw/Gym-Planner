@@ -14,11 +14,12 @@ public class Exercise {
     @Column(name = "exercise_id")
     private Integer id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = true) //if null exercise is available to every user
     private Integer userId;
 
-    @Column(name = "muscle_group_id")
-    private Integer muscleGroupId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "muscle_group_id")
+    private MuscleGroup muscleGroup;
 
     private String name;
 
