@@ -60,11 +60,12 @@ public class ExerciseController {
     }
     // add new exercise that belong to user
     @PostMapping("/add")
-    public ResponseEntity<Exercise> createExercise(@RequestBody ExerciseDto exerciseDto, HttpServletRequest request) {
+    public ResponseEntity<Void> createExercise(@RequestBody ExerciseDto exerciseDto, HttpServletRequest request) {
         Integer userId = jwtService.extractUserId(request);
-
+        log.info("Try to add new exercise");
+        log.info(exerciseDto.toString());
         Exercise newExercise = exerciseService.createExercise(exerciseDto, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newExercise);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // get all user and global exercises by category

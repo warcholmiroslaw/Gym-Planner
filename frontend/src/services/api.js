@@ -7,15 +7,33 @@ const apiUrl = process.env.REACT_APP_API_URL;
 export const fetchProtectedData = async (endpoint) => {
     const token = getToken();
     try {
-        console.log(endpoint);
-        const response = await axios.get(`${apiUrl}/${endpoint}`, {
-            headers: {
+        const response = await axios.get(
+            `${apiUrl}/${endpoint}`,
+            {
+                headers: {
                 Authorization: `Bearer ${token}`,
             },
         });
         return response.data;
 
     } catch (error) {
+        console.log(error);
+    }
+};
+
+export const postData = async ({endpoint, data}) => {
+
+    const token = getToken();
+    console.log("endpoint: ", endpoint);
+    try{
+        const response = await axios.post(
+            `${apiUrl}/${endpoint}`,
+            data,
+            {headers: {Authorization: `Bearer ${token}`}}
+        );
+        return response.status;
+
+    } catch (error){
         console.log(error);
     }
 };

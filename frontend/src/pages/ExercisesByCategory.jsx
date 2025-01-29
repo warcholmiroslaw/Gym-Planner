@@ -1,17 +1,26 @@
 import {useEffect, useState} from "react";
 import {useParams} from 'react-router-dom';
-import {Container, Flex, Text} from "@chakra-ui/react";
+import {
+    Button,
+    Container,
+    Flex,
+    Text,
+    useDisclosure
+} from "@chakra-ui/react";
 import ButtonWithLabel from "../components/ButtonWithLabel";
 import { MdOutlineAddBox } from "react-icons/md";
 import ExerciseList from "../components/ExerciseList";
 import {fetchProtectedData} from "../services/api"
 import axios from "axios";
+import AddExercise from "../components/addExercise";
 
 const ExercisesByCategory = () => {
 
     const {category} = useParams();
     const [exercises, setExercises] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     useEffect(() => {
 
@@ -73,11 +82,12 @@ const ExercisesByCategory = () => {
                 >Exercises for {category}
                 </Text>
 
-                <ButtonWithLabel
-                    action=" "
-                    name="Add exercise"
-                    icon = {MdOutlineAddBox}
-                />
+                <AddExercise />
+                {/*<ButtonWithLabel*/}
+                {/*    onClick = ""*/}
+                {/*    name="Add exercise"*/}
+                {/*    icon = {MdOutlineAddBox}*/}
+                {/*/>*/}
 
             </Flex>
 

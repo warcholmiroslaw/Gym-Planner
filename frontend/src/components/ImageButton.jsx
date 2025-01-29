@@ -1,6 +1,4 @@
 import React from 'react';
-import {Icon, IconButton, Stack} from "@chakra-ui/react"
-import { MdOutlineHistory } from "react-icons/md";
 import {Button, Image, Text} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,14 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 
 const ImageButton = ({fieldKey, image, name, action}) => {
+
     const navigate = useNavigate();
 
-    const handleSignUp = (action) => {
-        navigate(`/${action}`);
-    };
-
     return (
-        <Button onClick={() => handleSignUp(action)}
+        <Button onClick={() => navigate(`/${action}`)}
                 bg = "#001449"
                 display="flex"
                 flexDirection="column"
