@@ -20,7 +20,7 @@ const ExercisesByCategory = () => {
     const [exercises, setExercises] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    // const { isOpen, onOpen, onClose } = useDisclosure()
 
     useEffect(() => {
 
@@ -82,12 +82,8 @@ const ExercisesByCategory = () => {
                 >Exercises for {category}
                 </Text>
 
+                {/*Button with modal to create new exercise*/}
                 <AddExercise />
-                {/*<ButtonWithLabel*/}
-                {/*    onClick = ""*/}
-                {/*    name="Add exercise"*/}
-                {/*    icon = {MdOutlineAddBox}*/}
-                {/*/>*/}
 
             </Flex>
 

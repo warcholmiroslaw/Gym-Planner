@@ -6,13 +6,13 @@ import {useNavigate} from "react-router-dom";
 
 
 
-const ButtonWithLabel = ({fieldKey, icon, name, action}) => {
+const ButtonWithLabel = ({fieldKey, icon, name, action, onClick}) => {
 
     const navigate = useNavigate();
 
     return (
         <Button
-            onClick={() => navigate(`/${action}`)}
+            onClick = {onClick ?? (() => navigate(`/${action}`))}
             bg = "#001449"
             display="flex"
             flexDirection="column"

@@ -2,18 +2,50 @@ import {
     Table,
     Thead,
     Tbody,
-    Tfoot,
     Tr,
     Th,
     Td,
-    TableCaption,
-    TableContainer, Button, Flex,
+    TableContainer, Button, Flex, useDisclosure,
 } from '@chakra-ui/react'
 import React, {useState} from "react";
+import {deleteData} from "../services/api";
+import { useToast, Text} from '@chakra-ui/react'
 
+import UpdateExercise from "./editExercise";
 
 const ExerciseList =({exercises}) => {
+
     const [hoveredRow, setHoveredRow] = useState(null);
+
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const toast = useToast()
+
+    const deleteExercise = async (e, exerciseId, exerciseName) => {
+        e.preventDefault();
+
+        const response = await deleteData(`exercise/delete/${exerciseId}`);
+        if (response === 204){
+            toast({
+                title: 'Exercise deleted',
+                description: (
+                    <>
+                        Exercise <Text as="span" fontWeight="bold">{exerciseName}</Text> deleted from database.
+                    </>
+                ),
+                status: 'success',
+                duration: 9000,
+                isClosable: true,
+                onCloseComplete: () => {
+                    // reload page after toast disappear or closed
+                    window.location.reload();
+                },
+            })
+        }
+    }
+
+
 
     return (
     <TableContainer
@@ -84,6 +116,8 @@ const ExerciseList =({exercises}) => {
                     >
                         {exercise.description}
                     </Td>
+
+                    {/*row with buttons to edit /global exercises can't be changed*/}
                     <Td>
                         <Flex
                             direction={{ base: "column", md: "row", lg: "row"}}
@@ -93,27 +127,37 @@ const ExerciseList =({exercises}) => {
                                 margin = "0"
                                 flex="1"
                                 color="#808aa4"
-                                display={hoveredRow === index ? 'inline-block' : 'none'}
-                                mr={{base:0, md:2, lg:2}}
+                                display={exercise.userId !== null && hoveredRow === index ? 'inline-block' : 'none'}                                mr={{base:0, md:2, lg:2}}
                                 justifyContent="center"
                                 padding={{base:2, md:2, lg:0}}
                                 marginBottom={{base:2, md:0, lg:0}}
                                 width="auto"
                                 whiteSpace="nowrap"
+                                // action{}
+                                onClick={onOpen}
                             >
                                 Edit
                             </Button>
+
+                            {/*when you click Edit modal will display*/}
+                            <UpdateExercise
+                                exercise={exercise}
+                                isOpen={isOpen}
+                                onClose={onClose}
+                            />
+
                             <Button
                                 flex="1"
                                 variant="outline"
                                 color="001242"
                                 borderColor="001242"
-                                display={hoveredRow === index ? 'inline-block' : 'none'}
+                                display={exercise.userId !== null && hoveredRow === index ? 'inline-block' : 'none'}
                                 mr={{base:0, md:2, lg:2}}
                                 justifyContent="center"
                                 padding={{base:2, md:2, lg:0}}
                                 width="auto"
                                 whiteSpace="nowrap"
+                                onClick={(e) => deleteExercise(e, exercise.id, exercise.name)}
                             >
                                 Delete
                             </Button>

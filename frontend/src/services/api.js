@@ -37,3 +37,38 @@ export const postData = async ({endpoint, data}) => {
         console.log(error);
     }
 };
+
+
+export const putData = async ({endpoint, data}) => {
+
+    const token = getToken();
+    console.log("endpoint: ", endpoint);
+    try{
+        const response = await axios.put(
+            `${apiUrl}/${endpoint}`,
+            data,
+            {headers: {Authorization: `Bearer ${token}`}}
+        );
+        return response.status;
+
+    } catch (error){
+        console.log(error);
+    }
+};
+
+
+export const deleteData = async (endpoint) => {
+
+    const token = getToken();
+    console.log("endpoint: ", endpoint);
+    try{
+        const response = await axios.delete(
+            `${apiUrl}/${endpoint}`,
+            {headers: {Authorization: `Bearer ${token}`}}
+        );
+        return response.status;
+
+    } catch (error){
+        console.log(error);
+    }
+};

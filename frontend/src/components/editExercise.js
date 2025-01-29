@@ -12,15 +12,16 @@ import {
 } from "@chakra-ui/react";
 import ButtonWithLabel from "./ButtonWithLabel";
 import { MdOutlineAddBox } from "react-icons/md";
-import {postData} from "../services/api";
+import {putData} from "../services/api";
 
-const AddExercise = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+const UpdateExercise = ({exercise, isOpen, onClose}) => {
+
 
     const [formData, setFormData] = useState({
-        name: "",
-        muscleGroupId: "",
-        description: "",
+        id: exercise.id,
+        name: exercise.name,
+        muscleGroupId: exercise.muscleGroupId,
+        description: exercise.description,
     });
 
 
@@ -32,18 +33,18 @@ const AddExercise = () => {
         }));
     };
 
-    const [created, setCreated] = useState(false);
+    const [updated, setUpdated] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await postData({endpoint: "exercise/add",data: formData});
-            console.log(response);
-            if (response === 201) {
-                setCreated(true);
+            const response = await putData({endpoint: "exercise/update",data: formData});
+            console.log("update response : ", response);
+            if (response === 200) {
+                setUpdated(true);
             }
             else{
-                setCreated(false);
+                setUpdated(false);
             }
         } catch (error) {
             console.error("Login failed:", error);
@@ -53,61 +54,49 @@ const AddExercise = () => {
 
     return (
         <>
-
-            <ButtonWithLabel
-                name="Add exercise"
-                icon={MdOutlineAddBox}
-                onClick={onOpen}
-            />
             <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay/>
                 <form onSubmit={handleSubmit}>
-                    <ModalContent>
-                        <ModalHeader>Add exercise</ModalHeader>
+                    <ModalContent
+                    >
+                        <ModalHeader>Update exercise</ModalHeader>
                         <ModalCloseButton/>
                         <ModalBody pb={6}>
                             <FormControl>
                                 <FormLabel>name</FormLabel>
                                 <Input
                                     name="name"
-                                    placeholder='name'
+                                    value={formData.name}
                                     onChange={handleChange}
                                 />
                             </FormControl>
 
                             <FormControl>
                                 <FormLabel>Muscle group</FormLabel>
-                                <Select
-                                    name="muscleGroupId"
-                                    placeholder='Select muscle group'
-                                    onChange={handleChange}
-                                >
-                                    <option value='1'>Chest</option>
-                                    <option value='2'>Back</option>
-                                    <option value='3'>Legs</option>
-                                    <option value='4'>Shoulders</option>
-                                    <option value='5'>Arms</option>
-                                    <option value='6'>Core(Abs)</option>
-                                </Select>
+                                <Input
+                                    name="MuscleGroup"
+                                    value={exercise.muscleGroup.name}
+                                    isReadOnly={true}
+                                />
                             </FormControl>
 
                             <FormControl mt={4}>
-                                <FormLabel>description</FormLabel>
+                            <FormLabel>description</FormLabel>
                                 <Input
                                     name="description"
-                                    placeholder='description'
+                                    value={formData.description}
                                     onChange={handleChange}
                                 />
                             </FormControl>
 
                             {/*if server created exercise display alert*/}
-                            {created && (<Alert status='success'
+                            {updated && (<Alert status='success'
                                                 variant='solid'
                                                 borderRadius={4}
                                                 marginTop={4}
                             >
                                 <AlertIcon/>
-                                Exercise successfully added !
+                                Exercise updated !
                             </Alert>)}
 
                         </ModalBody>
@@ -118,7 +107,7 @@ const AddExercise = () => {
                                     type='submit'
                                 // onClick={onClose}
                             >
-                                Add exercise
+                                Change Exercise
                             </Button>
                             <Button onClick={onClose}>Cancel</Button>
                         </ModalFooter>
@@ -128,4 +117,4 @@ const AddExercise = () => {
         </>
     )
 }
-export default AddExercise;
+export default UpdateExercise;
