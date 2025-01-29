@@ -6,6 +6,7 @@ import com.example.demo.repository.ExerciseRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -51,6 +52,7 @@ public class ExerciseService {
         return exerciseRepository.findByUserId(userId);
     }
 
+    // create Exercise
     public Exercise createExercise(ExerciseDto exerciseDto, Integer userId) {
 
         Exercise newExercise = new Exercise()
@@ -62,6 +64,7 @@ public class ExerciseService {
         return exerciseRepository.save(newExercise);
     }
 
+    // update Exercise
     public Exercise updateExercise(ExerciseDto exerciseDto, Integer userId) {
         Exercise existingExercise = exerciseRepository.findById(exerciseDto.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Exercise not found"));
@@ -75,5 +78,19 @@ public class ExerciseService {
         modelMapper.map(exerciseDto, existingExercise);
 
         return exerciseRepository.save(existingExercise);
+    }
+
+
+    // delete Exercise
+    public ResponseEntity<Object> deleteExercise(Integer id, Integer userId) {
+        Optional<Exercise> exercise = exerciseRepository.findById(id);
+
+        return exercise.map(Exercise::getUserId)
+                .filter(userIdFromExercise -> userIdFromExercise.equals(userId))
+                .map(userIdFromExercise -> {
+                    exerciseRepository.deleteById(id);
+                    return ResponseEntity.noContent().build(); // Zwraca 204 No Content
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.FORBIDDEN).build());
     }
 }

@@ -68,6 +68,15 @@ public class ExerciseController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @DeleteMapping("/delete/{exerciseId}")
+    public ResponseEntity<Object> deleteExercise(@PathVariable Integer exerciseId, HttpServletRequest request) {
+        Integer userId = jwtService.extractUserId(request);
+
+        log.info("Try to delete exercise");
+
+        return exerciseService.deleteExercise(exerciseId, userId);
+    }
+
     // get all user and global exercises by category
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Exercise>> getExerciseByCategory(@PathVariable String category, HttpServletRequest request) {
