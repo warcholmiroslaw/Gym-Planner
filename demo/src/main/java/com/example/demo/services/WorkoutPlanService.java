@@ -61,7 +61,7 @@ public class WorkoutPlanService {
                 })
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Workout plan with ID: " + workoutPlanId + " doesn't exist!")); // when WP doesn't exist
     }
-    
+
     // create Workout plan
     public WorkoutPlan createWorkoutPlan(WorkoutPlanDto workoutPlanDto, Integer userId) {
 

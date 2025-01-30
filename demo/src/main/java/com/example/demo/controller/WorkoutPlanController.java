@@ -2,10 +2,11 @@ package com.example.demo.controller;
 
 
 import com.example.demo.dtos.WorkoutPlanDto;
+import com.example.demo.dtos.WorkoutPlanExerciseDto;
 import com.example.demo.models.WorkoutPlan;
-import com.example.demo.repository.WorkoutPlanRepository;
 import com.example.demo.services.ExerciseService;
 import com.example.demo.services.JwtService;
+import com.example.demo.services.WorkoutPlanExerciseService;
 import com.example.demo.services.WorkoutPlanService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -14,8 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/workoutplan")
@@ -30,6 +29,8 @@ public class WorkoutPlanController {
     private static final Logger log = LoggerFactory.getLogger(WorkoutPlanController.class);
     @Autowired
     private ExerciseService exerciseService;
+    @Autowired
+    private WorkoutPlanExerciseService workoutPlanExerciseService;
 
 
     public WorkoutPlanController(JwtService jwtService) {
@@ -74,4 +75,34 @@ public class WorkoutPlanController {
     }
 
 
+
+    // realted to exercises in workoutPlan
+
+    // add existing Exercise do workoutPlan
+    @PostMapping("/{workoutPlanId}/exercise/add")
+    public ResponseEntity<Object> addExerciseToWorkoutPlan(
+            @PathVariable Integer workoutPlanId,
+                           @RequestBody WorkoutPlanExerciseDto workoutPlanExerciseDto,
+                           HttpServletRequest request) {
+
+        Integer userId = jwtService.extractUserId(request);
+        log.info("Try to add exercise to existing workout plan");
+
+        return workoutPlanExerciseService.addWorkoutPlanExercise(workoutPlanId, workoutPlanExerciseDto, userId);
+    }
+
+
+    // delete exercise from workoutPlan
+    @DeleteMapping("/{workoutPlanId}/exercise/delete")
+    public ResponseEntity<Object> deleteWorkoutPlanExercise(
+            @PathVariable Integer workoutPlanId,
+            @RequestBody WorkoutPlanExerciseDto workoutPlanExerciseDto,
+            HttpServletRequest request) {
+
+        Integer userId = jwtService.extractUserId(request);
+        log.info("Try delete exercise from existing workout plan");
+
+        return workoutPlanExerciseService.deleteWorkoutPlanExercise(workoutPlanId, workoutPlanExerciseDto, userId);
+
+    }
 }

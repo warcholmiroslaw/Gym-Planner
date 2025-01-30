@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -26,7 +28,9 @@ public class WorkoutPlan {
     @JsonIgnore
     private User user;
 
+
     @Column(name = "user_id")
+    @JsonIgnore
     private Integer userId;
 
     private String name;
@@ -34,4 +38,7 @@ public class WorkoutPlan {
 
     @Column(name = "created_at")
     private java.time.LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "workoutPlan", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkoutPlanExercise> workoutPlanExercises;
 }

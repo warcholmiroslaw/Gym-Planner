@@ -3,6 +3,8 @@ package com.example.demo.services;
 import com.example.demo.dtos.ExerciseDto;
 import com.example.demo.models.Exercise;
 import com.example.demo.repository.ExerciseRepository;
+import lombok.Getter;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
