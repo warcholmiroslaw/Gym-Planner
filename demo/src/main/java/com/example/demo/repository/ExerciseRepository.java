@@ -15,7 +15,7 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Integer> {
             @Param("name") String name,
             @Param("userId") Integer userId);
 
-    @Query("SELECT e FROM Exercise e WHERE e.userId =:userId")
+    @Query("SELECT e FROM Exercise e WHERE e.userId = :userId")
     Optional<List<Exercise>> findByUserId(@Param("userId")Integer userId);
 
     @Query("SELECT e FROM Exercise e WHERE e.userId = NULL")

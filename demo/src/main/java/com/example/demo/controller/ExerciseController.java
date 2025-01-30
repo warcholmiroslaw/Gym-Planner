@@ -28,8 +28,8 @@ public class ExerciseController {
     private final JwtService jwtService;
 
     private static final Logger log = LoggerFactory.getLogger(ExerciseController.class);
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private UserService userService;
 
     public ExerciseController(JwtService jwtService) {
         this.jwtService = jwtService;
