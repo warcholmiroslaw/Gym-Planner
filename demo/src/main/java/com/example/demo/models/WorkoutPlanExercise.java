@@ -1,9 +1,7 @@
 package com.example.demo.models;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -23,7 +21,6 @@ public class WorkoutPlanExercise {
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     @Column(name = "wpe_id")
-    @JsonIgnore
     private Integer id;
 
     @Column(name = "workout_plan_id")
@@ -44,7 +41,7 @@ public class WorkoutPlanExercise {
     private Exercise exercise;
 
     @OneToMany(mappedBy = "workoutPlanExerciseId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WorkoutPlanExerciseSets> workoutPlanExerciseSets;
+    private List<WorkoutPlanSets> workoutPlanSets;
 
 
 }

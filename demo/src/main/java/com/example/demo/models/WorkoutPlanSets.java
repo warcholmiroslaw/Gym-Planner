@@ -1,7 +1,6 @@
 package com.example.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import lombok.experimental.Accessors;
 @Entity
 @Table(name = "workout_plan_sets")
 @Data
-public class WorkoutPlanExerciseSets {
+public class WorkoutPlanSets {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

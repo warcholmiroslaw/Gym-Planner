@@ -29,4 +29,10 @@ public interface ExerciseRepository extends JpaRepository<Exercise, Integer> {
 
     @Query("SELECT e FROM Exercise e WHERE e.userId = :userId OR e.userId IS NULL")
     Optional<List<Exercise>> findAll(@Param("userId") Integer userId);
+
+
+    @Query("SELECT e FROM Exercise e WHERE e.id = :exerciseId AND (e.userId IS NULL  OR e.userId = :userId)")
+    Optional<Exercise> findByIds(
+            @Param("exerciseId") Integer exerciseId,
+            @Param("userId") Integer userId);
 }

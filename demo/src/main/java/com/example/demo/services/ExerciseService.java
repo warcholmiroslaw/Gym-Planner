@@ -46,6 +46,13 @@ public class ExerciseService {
                 );
     }
 
+    public Exercise getExerciseByIds(Integer exerciseId, Integer userId) {
+        return exerciseRepository.findByIds(exerciseId, userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "There's no exercise with ID: " + exerciseId)
+                );
+    }
+
     public Optional<List<Exercise>> getExerciseByCategory(String category, Integer userId) {
         return exerciseRepository.findExercisesByMuscleGroupName(category, userId);
     }

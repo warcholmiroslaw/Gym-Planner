@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.dtos.WPSetsDto;
 import com.example.demo.dtos.WorkoutPlanDto;
 import com.example.demo.dtos.WorkoutPlanExerciseDto;
 import com.example.demo.models.WorkoutPlan;
-import com.example.demo.services.ExerciseService;
-import com.example.demo.services.JwtService;
-import com.example.demo.services.WorkoutPlanExerciseService;
-import com.example.demo.services.WorkoutPlanService;
+import com.example.demo.services.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +29,9 @@ public class WorkoutPlanController {
     private ExerciseService exerciseService;
     @Autowired
     private WorkoutPlanExerciseService workoutPlanExerciseService;
+
+    @Autowired
+    private SetsService setsService;
 
 
     public WorkoutPlanController(JwtService jwtService) {
@@ -72,37 +73,5 @@ public class WorkoutPlanController {
         Integer userId = jwtService.extractUserId(request);
 
         return workoutPlanService.updateWorkoutPlan(workoutPlanDto, userId);
-    }
-
-
-
-    // realted to exercises in workoutPlan
-
-    // add existing Exercise do workoutPlan
-    @PostMapping("/{workoutPlanId}/exercise/add")
-    public ResponseEntity<Object> addExerciseToWorkoutPlan(
-            @PathVariable Integer workoutPlanId,
-                           @RequestBody WorkoutPlanExerciseDto workoutPlanExerciseDto,
-                           HttpServletRequest request) {
-
-        Integer userId = jwtService.extractUserId(request);
-        log.info("Try to add exercise to existing workout plan");
-
-        return workoutPlanExerciseService.addWorkoutPlanExercise(workoutPlanId, workoutPlanExerciseDto, userId);
-    }
-
-
-    // delete exercise from workoutPlan
-    @DeleteMapping("/{workoutPlanId}/exercise/delete")
-    public ResponseEntity<Object> deleteWorkoutPlanExercise(
-            @PathVariable Integer workoutPlanId,
-            @RequestBody WorkoutPlanExerciseDto workoutPlanExerciseDto,
-            HttpServletRequest request) {
-
-        Integer userId = jwtService.extractUserId(request);
-        log.info("Try delete exercise from existing workout plan");
-
-        return workoutPlanExerciseService.deleteWorkoutPlanExercise(workoutPlanId, workoutPlanExerciseDto, userId);
-
     }
 }
