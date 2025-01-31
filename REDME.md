@@ -222,6 +222,34 @@ The ERD illustrates the relationships between the various entities in the Gym Pl
 The diagram provides a visual representation of how each table is related and how data flows through the system, helping to better understand the structure of the Gym Planner application.
 
 <div style="text-align: center;">
-  <img src="/images/diagram_ERD.png" style="width: 40%; height: auto;" />
+  <img src="/images/diagram_ERD.png" style="width: 100%; height: auto;" />
 </div>
+
+<h1>Sign up</h1>
+
+<div style="text-align: center;">
+  <img src="/images/signup.png" style="width: 100%; height: auto;" />
+</div>
+
+<h1>Login</h1>
+
+<div style="text-align: center;">
+  <img src="/images/login.png" style="width: 100%; height: auto;" />
+</div>
+
+
+<h1>Dashboard</h1>
+
+<div style="text-align: center;">
+  <img src="/images/dashboard.png" style="width: 100%; height: auto;" />
+</div>
+
+
+<h1>Exercise Category</h1>
+
+<div style="text-align: center;">
+  <img src="/images/exercise_category.png" style="width: 100%; height: auto;" />
+</div>
+
+
 
