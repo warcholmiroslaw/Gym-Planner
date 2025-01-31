@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import ch.qos.logback.core.model.Model;
 import com.example.demo.dtos.ExerciseDto;
 import com.example.demo.services.ExerciseService;
 import com.example.demo.models.Exercise;
@@ -22,69 +23,75 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/exercise")
 public class ExerciseController {
+
     @Autowired
     private ExerciseService exerciseService;
 
     private final JwtService jwtService;
 
     private static final Logger log = LoggerFactory.getLogger(ExerciseController.class);
-//    @Autowired
-//    private UserService userService;
+
+
+    private Integer userId;
 
     public ExerciseController(JwtService jwtService) {
+
         this.jwtService = jwtService;
     }
 
 
+    @ModelAttribute
+    public void setVariables(HttpServletRequest request) {
+        this.userId = jwtService.extractUserId(request);
+    }
+
     // get all global and user exercises
     @GetMapping("/all")
-    public ResponseEntity<List<Exercise>> getAllExercises(HttpServletRequest request) {
-        Integer userId = jwtService.extractUserId(request);
+    public ResponseEntity<List<Exercise>> getAllExercises() {
 
-        return new ResponseEntity<>(exerciseService.allExercises(userId), HttpStatus.OK);
+        return new ResponseEntity<>(exerciseService.allExercises(this.userId), HttpStatus.OK);
     }
 
+    // get exercise by name
     @GetMapping("/name/{name}")
-    public ResponseEntity<Exercise> getExerciseByName(@PathVariable String name, HttpServletRequest request) {
-        Integer userId = jwtService.extractUserId(request);
+    public ResponseEntity<Exercise> getExerciseByName(@PathVariable String name) {
 
-        return new ResponseEntity<Exercise>(exerciseService.getExerciseByName(name, userId), HttpStatus.OK);
+        return new ResponseEntity<Exercise>(exerciseService.getExerciseByName(name, this.userId), HttpStatus.OK);
     }
-    @PutMapping("/update")
-    public ResponseEntity<Exercise> updateExercise(@RequestBody ExerciseDto exerciseDto, HttpServletRequest request) {
-        Integer userId = jwtService.extractUserId(request);
-        Exercise updatedExercise = exerciseService.updateExercise(exerciseDto, userId);
+    // update Exercise
+    @PutMapping
+    public ResponseEntity<Exercise> updateExercise(@RequestBody ExerciseDto exerciseDto) {
+
+        Exercise updatedExercise = exerciseService.updateExercise(exerciseDto, this.userId);
 
         return ResponseEntity.ok(updatedExercise);
 
     }
+
     // add new exercise that belong to user
-    @PostMapping("/add")
-    public ResponseEntity<Void> createExercise(@RequestBody ExerciseDto exerciseDto, HttpServletRequest request) {
-        Integer userId = jwtService.extractUserId(request);
+    @PostMapping
+    public ResponseEntity<Void> createExercise(@RequestBody ExerciseDto exerciseDto) {
+
         log.info("Try to add new exercise");
         log.info(exerciseDto.toString());
-        Exercise newExercise = exerciseService.createExercise(exerciseDto, userId);
+        Exercise newExercise = exerciseService.createExercise(exerciseDto, this.userId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/delete/{exerciseId}")
-    public ResponseEntity<Object> deleteExercise(@PathVariable Integer exerciseId, HttpServletRequest request) {
-        Integer userId = jwtService.extractUserId(request);
+    // delete exercise
+    @DeleteMapping("/{exerciseId}")
+    public ResponseEntity<Object> deleteExercise(@PathVariable Integer exerciseId) {
 
         log.info("Try to delete exercise");
 
-        return exerciseService.deleteExercise(exerciseId, userId);
+        return exerciseService.deleteExercise(exerciseId, this.userId);
     }
 
     // get all user and global exercises by category
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Exercise>> getExerciseByCategory(@PathVariable String category, HttpServletRequest request) {
+    public ResponseEntity<List<Exercise>> getExerciseByCategory(@PathVariable String category) {
 
-        // extract userId to collect all global and user exercises
-        Integer userId = jwtService.extractUserId(request);
-
-        List<Exercise> exercises = exerciseService.getExerciseByCategory(category, userId)
+        List<Exercise> exercises = exerciseService.getExerciseByCategory(category, this.userId)
                 .filter(list -> !list.isEmpty())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No exercises found for category: " + category));
 

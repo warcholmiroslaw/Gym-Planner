@@ -25,7 +25,7 @@ const ExerciseList =({exercises}) => {
     const deleteExercise = async (e, exerciseId, exerciseName) => {
         e.preventDefault();
 
-        const response = await deleteData(`exercise/delete/${exerciseId}`);
+        const response = await deleteData(`exercise/${exerciseId}`);
         if (response === 204){
             toast({
                 title: 'Exercise deleted',

@@ -37,7 +37,7 @@ const AddExercise = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await postData({endpoint: "exercise/add",data: formData});
+            const response = await postData({endpoint: "exercise",data: formData});
             console.log(response);
             if (response === 201) {
                 setCreated(true);

@@ -10,8 +10,6 @@ import {
     ModalFooter,
     useDisclosure, FormControl, FormLabel, Input, Select, AlertIcon, Alert,
 } from "@chakra-ui/react";
-import ButtonWithLabel from "./ButtonWithLabel";
-import { MdOutlineAddBox } from "react-icons/md";
 import {putData} from "../services/api";
 
 const UpdateExercise = ({exercise, isOpen, onClose}) => {
@@ -38,7 +36,7 @@ const UpdateExercise = ({exercise, isOpen, onClose}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await putData({endpoint: "exercise/update",data: formData});
+            const response = await putData({endpoint: "exercise",data: formData});
             console.log("update response : ", response);
             if (response === 200) {
                 setUpdated(true);
